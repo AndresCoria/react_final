@@ -2,22 +2,45 @@ import React, {useState} from 'react'
 import './Formulario.css'
 import {Formulario, ContenedorBoton, Boton, MensajeError } from './Formulario-styled'
 import Input from '../Input/Input';
+// import { Link } from 'react-router-dom';
 import {FaExclamationTriangle} from "react-icons/fa";
+import { useCartContext } from '../Context/CartContext'
+import { collection, getFirestore, addDoc } from 'firebase/firestore'
+import Swal from 'sweetalert2'
 
 
-const Form = () => {
+
+
+
+const FormularioCliente = () => {
   const [nombre, setNombre] = useState({campo: '', valido: null})
   const [apellido, setApellido] = useState({campo: '', valido: null})
+  const [domicilio, setDomicilio] = useState({campo: '', valido: null})
   const [correo, setCorreo] = useState({campo: '', valido: null})
   const [correo2, setCorreo2] = useState({campo: '', valido: null})
   const [telefono, setTelefono] = useState({campo: '', valido: null})
   const [formularioValido, setFormularioValido] = useState(null)
 
   const expresiones = {
-		nombre: /^[a-zA-ZÀ-ÿ\s]{4,20}$/, // Letras y espacios, pueden llevar acentos.
+		nombre: /^[a-zA-ZÀ-ÿ\s]{4,20}$/,
+    domicilio: /^[a-zA-ZÀ-ÿ0-9\s]{4,40}$/,
     correo: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-		telefono: /^\d{7,14}$/ // 7 a 14 numeros.
+		telefono: /^\d{7,14}$/
 	}
+
+  const { cart, totalPrice, clearCart } = useCartContext();
+
+  const order = {
+    Buyer: {
+      lastName: (apellido.campo),
+      email: (correo.campo),
+      name: (nombre.campo),
+      phone: (telefono.campo),
+      address: (domicilio.campo)
+    },
+    items: cart.map(product => ({id: product.id, title: product.title, price: product.price, cantidad: product.cantidad })),
+    total: totalPrice(),
+  }
 
   const validarCorreo = () => {
     if(correo.campo.length > 0){
@@ -43,7 +66,18 @@ const Form = () => {
         correo2.valido === 'true' &&
         telefono.valido === 'true'
       ){
+        const db = getFirestore();
+        const orderColletion = collection(db, 'orders');
+        addDoc(orderColletion, order)
+        .then( ({ id })  => Swal.fire( nombre.campo + ' Tu orden fue realizada, tu numero de orden es: ' + id + '       Gracias por tu compra' ));
         setFormularioValido(true);
+        setNombre({campo: '', valido: null});
+        setApellido({campo: '', valido: null});
+        setCorreo({campo: '', valido: null});
+        setCorreo2({campo: '', valido: null});
+        setTelefono({campo: '', valido: null});
+        setDomicilio({campo: '', valido: null});
+        clearCart()
       } else {
         setFormularioValido(false);
   }
@@ -102,6 +136,16 @@ const Form = () => {
             leyendaError="El telefono solo puede contener numeros y el maximo son 14 dígitos."
             expresionRegular={expresiones.telefono}
           />
+          <Input
+            estado={domicilio}
+            cambiarEstado={setDomicilio}
+            tipo="text"
+            label="Domicilio"
+            placeholder="Calle falsa 123"
+            name="domicilio"
+            leyendaError="El domicilio solo puede contener letras, numeros y espacios y un minimo de 4 y maximo de 20 caracteres."
+            expresionRegular={expresiones.domicilio}
+          />
           {formularioValido === false && <MensajeError>
             <p>
               <FaExclamationTriangle />
@@ -109,11 +153,11 @@ const Form = () => {
             </p>
           </MensajeError> }
           <ContenedorBoton>
-            <Boton type='submit'>Enviar</Boton>
+                <Boton type='submit'>Enviar</Boton>
           </ContenedorBoton>
         </Formulario>
     </main>
   )
 }
 
-export default Form
+export default FormularioCliente
