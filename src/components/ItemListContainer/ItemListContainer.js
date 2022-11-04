@@ -27,10 +27,12 @@ const ItemListContainer = () => {
   }, [categoriaId]);
 
   return (
-    <div>
+    <>
       <Title greeting={ greeting }/>
-      <ItemList data={data} />
-    </div>
+      <div id="div-cont">
+        <ItemList data={data} />
+      </div>
+    </>
   )
 }
 
