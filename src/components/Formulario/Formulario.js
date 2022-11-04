@@ -7,6 +7,7 @@ import {FaExclamationTriangle} from "react-icons/fa";
 import { useCartContext } from '../Context/CartContext'
 import { collection, getFirestore, addDoc } from 'firebase/firestore'
 import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -29,6 +30,7 @@ const FormularioCliente = () => {
 	}
 
   const { cart, totalPrice, clearCart } = useCartContext();
+  const navigate = useNavigate();
 
   const order = {
     Buyer: {
@@ -69,7 +71,13 @@ const FormularioCliente = () => {
         const db = getFirestore();
         const orderColletion = collection(db, 'orders');
         addDoc(orderColletion, order)
-        .then( ({ id })  => Swal.fire( nombre.campo + ' Tu orden fue realizada, tu numero de orden es: ' + id + '       Gracias por tu compra' ));
+        .then( ({ id })  => {
+          const swalText = nombre.campo + ' Tu orden fue realizada, tu numero de orden es: ' + id + '       Gracias por tu compra';
+          Swal.fire(swalText)
+            .then(() => {
+              navigate('/');
+            })
+        });
         setFormularioValido(true);
         setNombre({campo: '', valido: null});
         setApellido({campo: '', valido: null});
