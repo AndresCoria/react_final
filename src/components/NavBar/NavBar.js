@@ -6,7 +6,7 @@ import CardWidget from '../CardWidget/CardWidget'
 const NavBar = () => {
   return (
     <div className='contenedor'>
-      <NavLink to='/' className='Logo'><img src='/images/logo-blanco.png' alt='LOGO' /></NavLink>
+      <NavLink to='/' className='Logo'><img src='https://i.imgur.com/Uz9H6Sd.png' alt='LOGO' /></NavLink>
 
       <input type="checkbox" id="menu-bar"></input>
       <label htmlFor="menu-bar">menu</label>

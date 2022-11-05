@@ -30,7 +30,7 @@ const ItemListContainer = () => {
     <>
       <Title greeting={ greeting }/>
       <div id="div-cont">
-        <ItemList data={data} />
+        <ItemList data={data}  />
       </div>
     </>
   )
