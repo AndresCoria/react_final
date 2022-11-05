@@ -6,7 +6,6 @@ import { getFirestore, collection, getDocs, query, where } from 'firebase/firest
 
 
 const ItemListContainer = () => {
-  // const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   let greeting = 'Alojamiento de Servidores de Juegos'
   const {categoriaId} = useParams();

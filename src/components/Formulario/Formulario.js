@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import './Formulario.css'
 import {Formulario, ContenedorBoton, Boton, MensajeError } from './Formulario-styled'
 import Input from '../Input/Input';
-// import { Link } from 'react-router-dom';
 import {FaExclamationTriangle} from "react-icons/fa";
 import { useCartContext } from '../Context/CartContext'
 import { collection, getFirestore, addDoc } from 'firebase/firestore'
