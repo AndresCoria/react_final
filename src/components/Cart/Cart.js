@@ -5,7 +5,7 @@ import ItemCart from '../IteamCart/ItemCart';
 import './Cart.css'
 
 const Cart = () => {
-  const { cart, totalPrice } = useCartContext();
+  const { cart, totalPrice, clearCart } = useCartContext();
 
   if (cart.length === 0) {
     return (
@@ -26,6 +26,9 @@ const Cart = () => {
       </p>
       <Link to='/FormularioCliente'>
           <button>Cargar orden</button>
+      </Link>
+      <Link>
+          <button onClick={ clearCart }>Vaciar Carrito</button>
       </Link>
     </div>
   )

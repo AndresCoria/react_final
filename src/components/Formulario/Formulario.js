@@ -31,18 +31,6 @@ const FormularioCliente = () => {
   const { cart, totalPrice, clearCart } = useCartContext();
   const navigate = useNavigate();
 
-  const order = {
-    Buyer: {
-      lastName: (apellido.campo),
-      email: (correo.campo),
-      name: (nombre.campo),
-      phone: (telefono.campo),
-      address: (domicilio.campo)
-    },
-    items: cart.map(product => ({id: product.id, title: product.title, price: product.price, cantidad: product.cantidad })),
-    total: totalPrice(),
-  }
-
   const validarCorreo = () => {
     if(correo.campo.length > 0){
       if(correo.campo !== correo2.campo){
@@ -69,7 +57,17 @@ const FormularioCliente = () => {
       ){
         const db = getFirestore();
         const orderColletion = collection(db, 'orders');
-        addDoc(orderColletion, order)
+        addDoc(orderColletion, {
+          Buyer: {
+            lastName: (apellido.campo),
+            email: (correo.campo),
+            name: (nombre.campo),
+            phone: (telefono.campo),
+            address: (domicilio.campo)
+          },
+          items: cart.map(product => ({id: product.id, title: product.title, price: product.price, cantidad: product.cantidad })),
+          total: totalPrice(),
+        })
         .then( ({ id })  => {
           const swalText = nombre.campo + ' Tu orden fue realizada, tu numero de orden es: ' + id + '       Gracias por tu compra';
           Swal.fire(swalText)

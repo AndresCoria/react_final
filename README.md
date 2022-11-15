@@ -10,6 +10,5 @@ Por el momento se puede navegar por las diferentes categorias.
 - React JS
 - CSS (Solo el necesario para el funcionamiento de los componentes)
 - JS
-- Librerías: No se ha aplicado ninguna libreria.
 
 El proyecto sigue en desarrollo. Proximamente se iran agregando estilos cuando se defina una libreria a usar.

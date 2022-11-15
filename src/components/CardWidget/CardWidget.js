@@ -4,7 +4,7 @@ const CardWidget = () => {
   const { totalProducts, cart } = useCartContext();
 
     if(cart.length === 0) {
-      return ('')
+      return <i className="bi bi-cart3"></i>
     }
   return (
     <>

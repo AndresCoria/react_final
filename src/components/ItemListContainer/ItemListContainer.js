@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore'
 
 
+
 const ItemListContainer = () => {
   const [data, setData] = useState([]);
   let greeting = 'Alojamiento de Servidores de Juegos'
@@ -12,17 +13,15 @@ const ItemListContainer = () => {
 
 
   useEffect(() => {
-
     const querydb = getFirestore();
-    const queryColletion = collection(querydb, 'productos');
+    let queryColletion = collection(querydb, 'productos');
+
     if (categoriaId) {
-      const queryFilter = query(queryColletion, where('categoria', '==', categoriaId))
-      getDocs(queryFilter)
-          .then(res => setData(res.docs.map(producto => ({id: producto.id, ...producto.data() }))))
-    } else {
-      getDocs(queryColletion)
-          .then(res => setData(res.docs.map(producto => ({id: producto.id, ...producto.data() }))))
+      queryColletion = query(queryColletion, where('categoria', '==', categoriaId))
     }
+
+    getDocs(queryColletion)
+    .then(res => setData(res.docs.map(producto => ({id: producto.id, ...producto.data() }))))
   }, [categoriaId]);
 
   return (
